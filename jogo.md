@@ -1,0 +1,1 @@
+usar a base do jogo demo , separar em partes, faz o code review e dps da um merge 
