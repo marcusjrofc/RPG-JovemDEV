@@ -1,76 +1,48 @@
-const { verificarItem, ITENS } = require("../estado/personagem");
+const { ITENS, verificarItem } = require('../estado/personagem.js');
 
-const DESGASTE_FOME = 10;
-const DESGASTE_SEDE = 15;
-
-function passarTurno(carlos) {
+function passarTurno(personagem) {
   console.log("\n--- Um tempo se passa na selva... ---");
-  console.log(`🚶 Desgaste da caminhada: -${DESGASTE_FOME} Fome | -${DESGASTE_SEDE} Sede`);
-
-  carlos.fome -= DESGASTE_FOME;
-  carlos.sede -= DESGASTE_SEDE;
-
-  if (carlos.fome < 0) carlos.fome = 0;
-  if (carlos.sede < 0) carlos.sede = 0;
-
-  if (carlos.fome === 0) {
-    carlos.vida -= 10;
-    console.log("⚠️ Fome crítica (0): Perdeu -10 de Vida por desnutrição.");
-  }
-
-  if (carlos.sede === 0) {
-    carlos.vida -= 15;
-    console.log("⚠️ Sede crítica (0): Perdeu -15 de Vida por desidratação.");
-  }
-
-  if (carlos.veneno) {
-    carlos.vida -= 5;
+  
+  // Math.max garante que a fome e sede não baixam de 0
+  personagem.fome = Math.max(0, personagem.fome - 10);
+  personagem.sede = Math.max(0, personagem.sede - 15);
+  console.log("🚶 Desgaste da caminhada: -10 Fome | -15 Sede");
+  
+  if (personagem.veneno) {
+    personagem.vida = Math.max(0, personagem.vida - 5);
     console.log("☠️ Efeito do veneno: Perdeu -5 de Vida.");
   }
-
-  if (carlos.vida < 0) carlos.vida = 0;
-
-  console.log(
-    `Status -> Vida: ${carlos.vida} | Fome: ${carlos.fome} | Sede: ${carlos.sede}`,
-  );
-}
-
-function gerarEventoAleatorio(carlos) {
-  let dado = Math.floor(Math.random() * 10);
-
-  if (dado <= 3) {
-    console.log("🌿 O silêncio da Amazônia te cerca. Por enquanto, tudo calmo.");
-  } else if (dado <= 6) {
-    console.log("\n🐆 [EVENTO] Uma Onça-Pintada surge faminta dos arbustos!");
-
-    if (verificarItem(carlos, ITENS.MACHADO)) {
-      // Dano reduzido de -20 para -15
-      console.log("Usaste a machadinha para espantar a onça, mas sofreste arranhões (-15 Vida).");
-      carlos.vida -= 15;
-    } else {
-      // Dano reduzido de -50 para -35
-      console.log("Sem armas! Tentaste correr e a onça feriu-te gravemente (-35 Vida).");
-      carlos.vida -= 35;
-    }
-  } else if (dado <= 8) {
-    console.log("\n🦟 [EVENTO] Uma nuvem de mosquitos te ataca!");
-    carlos.veneno = true;
-    console.log("Contraíste uma febre e agora estás ENVENENADO (-5 Vida por turno).");
-  } else {
-    console.log("\n🌧️ [EVENTO] Começou a chover forte!");
-    if (carlos.sede >= 100) {
-      console.log("Como já estás totalmente hidratado (100%), apenas te molhas na chuva.");
-    } else {
-      // 115 para cobrir os 15 de dedução do turno que vêm logo a seguir
-      carlos.sede = Math.min(115, carlos.sede + 45);
-      console.log("Aproveitaste para beber água da chuva (+30 Sede).");
-    }
+  
+  // Verifica se está a morrer de fome ou sede
+  if (personagem.fome === 0 || personagem.sede === 0) {
+    personagem.vida = Math.max(0, personagem.vida - 20);
+    console.log("⚠️ Estás a morrer de fome/sede! (-20 Vida)");
   }
 
-  if (carlos.vida < 0) carlos.vida = 0;
+  console.log(`Status -> Vida: ${personagem.vida} | Fome: ${personagem.fome} | Sede: ${personagem.sede}`);
 }
 
-module.exports = {
-  passarTurno,
-  gerarEventoAleatorio,
-};
+function gerarEventoAleatorio(personagem) {
+  const dado = Math.floor(Math.random() * 10) + 1;
+  
+  if (dado <= 3) {
+    console.log("\n🦟 [EVENTO] Uma nuvem de mosquitos te ataca!");
+    if (!personagem.veneno) {
+      personagem.veneno = true;
+      console.log("Contraíste uma febre e agora estás ENVENENADO (-5 Vida por turno).");
+    }
+  } else if (dado <= 6) {
+    console.log("\n🐆 [EVENTO] Uma Onça-Pintada surge faminta dos arbustos!");
+    if (verificarItem(personagem, ITENS.MACHADO)) {
+      console.log("Usaste a machadinha para espantar a onça, mas sofreste arranhões (-15 Vida).");
+      personagem.vida = Math.max(0, personagem.vida - 15);
+    } else {
+      console.log("Sem armas! Tentaste correr e a onça feriu-te gravemente (-35 Vida).");
+      personagem.vida = Math.max(0, personagem.vida - 35);
+    }
+  } else {
+    console.log("\n🌿 O silêncio da Amazônia te cerca. Por enquanto, tudo calmo.");
+  }
+}
+
+module.exports = { passarTurno, gerarEventoAleatorio };

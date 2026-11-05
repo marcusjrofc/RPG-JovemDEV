@@ -1,52 +1,38 @@
-const prompt = require("prompt-sync")({ sigint: true });
-const { adicionarItem, verificarItem, ITENS } = require("../estado/personagem");
+const { adicionarItem, ITENS } = require('../estado/personagem.js');
 
-function rio(carlos) {
+function rio(personagem, prompt) {
     console.log("\n==========================================");
     console.log("📍 LOCAL: MARGEM DO RIO");
     console.log("Carlos caminha pela floresta e chega à margem de um rio calmo.");
     console.log("A água parece limpa e há peixes nadando perto da superfície.");
     console.log("==========================================");
-
-    const temCopo = verificarItem(carlos, ITENS.COPO);
-
+    
     console.log("\nEscolha sua ação:");
-    if (temCopo) {
-        console.log("1 - Usar o copo de alumínio para beber água limpa (Sacia a Sede)");
-    } else {
-        console.log("[Trancado] Precisas de um copo de alumínio para beber água com segurança.");
-    }
+    console.log("1 - Usar o copo de alumínio para beber água limpa (Sacia a Sede)");
     console.log("2 - Tentar pescar com as mãos (-5 Fome extra pela pesca, ganha peixe cru)");
     console.log("3 - Explorar as margens do rio em busca de destroços do avião (ganha machadinha)");
 
-    while (true) {
-        const input = prompt("O que você deseja fazer? ");
-        const escolha = input ? input.trim() : "";
+    let escolha = prompt("O que você deseja fazer? ");
 
-        if (escolha === "1" && temCopo) {
-            console.log("\n🥤 Usas o copo de alumínio: Sede restaurada ao máximo!");
-            carlos.sede = 115;
-            return "caverna";
-        }
-
-        if (escolha === "2") {
-            console.log("\n🎣 Gastas energia ao tentar pescar (-5 Fome adicional). Pegas um pequeno peixe!");
-            carlos.fome = Math.max(0, carlos.fome - 5);
-
-            if (!verificarItem(carlos, ITENS.PEIXE)) adicionarItem(carlos, ITENS.PEIXE);
-            return "caverna";
-        }
-
-        if (escolha === "3") {
-            // Nova mecânica: ganha a machadinha, mas perde a chance de beber ou comer no rio!
-            console.log("\n🪓 Encontras a caixa de emergência do avião presa nas pedras e pegas uma machadinha!");
-            
-            if (!verificarItem(carlos, ITENS.MACHADO)) adicionarItem(carlos, ITENS.MACHADO);
-            return "caverna";
-        }
-
-        console.log("\nOpção inválida ou ação trancada! Ficas pensativo na beira do rio.");
+    // Loop de validação do Input (Impede que o jogo quebre)
+    while (escolha !== "1" && escolha !== "2" && escolha !== "3") {
+        console.log("❌ Opção inválida. Escolhe 1, 2 ou 3.");
+        escolha = prompt("O que você deseja fazer? ");
     }
+
+    if (escolha === "1") {
+        personagem.sede = 100;
+        console.log("\n🥤 Usas o copo de alumínio: Sede restaurada ao máximo!");
+    } else if (escolha === "2") {
+        personagem.fome = Math.max(0, personagem.fome - 5);
+        adicionarItem(personagem, ITENS.PEIXE);
+        console.log("\n🐟 Conseguiste pegar um peixe cru! (-5 Fome pelo esforço)");
+    } else if (escolha === "3") {
+        adicionarItem(personagem, ITENS.MACHADO);
+        console.log("\n🪓 Encontraste uma machadinha presa num tronco!");
+    }
+
+    return "caverna"; // Retorna o próximo destino
 }
 
 module.exports = rio;
