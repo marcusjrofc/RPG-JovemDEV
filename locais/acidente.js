@@ -1,4 +1,5 @@
-const prompt = require("prompt-sync")();
+const prompt = require("prompt-sync")({ sigint: true });
+const { adicionarItem, verificarItem } = require("../estado/personagem");
 
 function acidente(carlos) {
     console.log("\n==========================================");
@@ -6,29 +7,29 @@ function acidente(carlos) {
     console.log("Durante fortes turbulências, o avião em que Carlos está cai na floresta.");
     console.log("Carlos acorda atordoado em meio aos destroços fumegantes.");
     console.log("==========================================");
-    
-    console.log("\n1 - Vasculhar os destroços em busca de suprimentos (-10 Fome, ganha ração)");
+
+    console.log("\n1 - Vasculhar os destroços em busca de suprimentos (ganha ração)");
     console.log("2 - Seguir em frente imediatamente para buscar ajuda");
-    
-    const escolha = prompt("O que você deseja fazer? ");
-    
-    if (escolha === "1") {
-        console.log("\nEncontras uma ração militar, mas o esforço deixa-te faminto!");
-        // REMOVER a linha: carlos.fome -= 10; 
-        
-        if (!carlos.inventario.includes("racao militar")) {
-            carlos.inventario.push("racao militar");
-            console.log("Item 'racao militar' adicionado ao inventário.");
+
+    // Repete a pergunta até a pessoa digitar uma opção válida
+    while (true) {
+        const escolha = prompt("O que você deseja fazer? ").trim();
+
+        if (escolha === "1") {
+            console.log("\nEncontras uma ração militar entre os destroços!");
+
+            if (!verificarItem(carlos, "racao militar")) {
+                adicionarItem(carlos, "racao militar");
+            }
+            return "rio";
         }
-        return "rio"; 
-    }
-    else if (escolha === "2") {
-        console.log("\nDecides não perder tempo e segues a trilha na floresta.");
-        return "rio"; 
-    } 
-    else {
+
+        if (escolha === "2") {
+            console.log("\nDecides não perder tempo e segues a trilha na floresta.");
+            return "rio";
+        }
+
         console.log("\nOpção inválida! O pânico toma conta e tentas reorganizar-te.");
-        return "acidente"; 
     }
 }
 
