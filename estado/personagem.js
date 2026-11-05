@@ -4,7 +4,7 @@ const carlos = {
   fome: 100,
   sede: 100,
   veneno: false,
-  inventario: ['copo de alumínio', 'machadinha', 'mochila', 'isqueiro', 'roupas']
+  inventario: ['copo de aluminio', 'machadinha', 'mochila', 'isqueiro', 'roupas']
 };
 
 function adicionarItem(item) {
