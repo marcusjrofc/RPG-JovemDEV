@@ -1,0 +1,11 @@
+{
+  "name": "rpg-jovemdev",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node jogo.js"
+  },
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
+  }
+}
