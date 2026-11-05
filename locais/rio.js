@@ -11,23 +11,23 @@ function rio(carlos) {
 
     console.log("\nEscolha sua ação:");
     if (temCopo) {
-        console.log("1 - Usar o copo de alumínio para beber água limpa (Sacia a sede)");
+        console.log("1 - Usar o copo de alumínio para beber água limpa (Sacia a Sede)");
     } else {
         console.log("[Trancado] Precisas de um copo de alumínio para beber água com segurança.");
     }
-    console.log("2 - Tentar pescar com as mãos (-15 Fome, ganha peixe cru)");
+    console.log("2 - Tentar pescar com as mãos (-5 Fome extra pela pesca, ganha peixe cru)");
     console.log("3 - Ignorar o rio e continuar seguindo viagem");
 
     const escolha = prompt("O que você deseja fazer? ");
 
     if (escolha === "1" && temCopo) {
-        console.log("\nUsas o copo de alumínio para beber água. A tua sede foi totalmente saciada!");
-        carlos.sede = 115; // Compensação de -15 do passarTurno
+        console.log("\n🥤 Usas o copo de alumínio: Sede restaurada ao máximo!");
+        carlos.sede = 115; // Compensação de -15 do passarTurno para exibir 100
         return "caverna";
     } 
     else if (escolha === "2") {
-        console.log("\nGastas energia a tentar pegar os peixes com as mãos. Pegas um pequeno peixe!");
-        carlos.fome -= 15;
+        console.log("\n🎣 Gastas energia ao tentar pescar (-5 Fome adicional). Pegas um pequeno peixe!");
+        carlos.fome -= 5;
         if (carlos.fome < 0) carlos.fome = 0;
         
         if (!carlos.inventario.includes("peixe cru")) {

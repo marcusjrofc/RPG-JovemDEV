@@ -18,39 +18,39 @@ let localAtual = "acidente";
 let jogando = true;
 
 console.log("\n=== SOBREVIVÊNCIA NA AMAZÔNIA: A JORNADA DE CARLOS ===");
+// Exibe os atributos no início do jogo
+console.log(`📊 Status Inicial -> Vida: ${carlos.vida} | Fome: ${carlos.fome} | Sede: ${carlos.sede}\n`);
 
 while (jogando) {
-    // 1. Checagem de Morte
     if (carlos.vida <= 0) {
         console.log("\n💀 GAME OVER: Carlos sucumbiu aos perigos da Amazônia.");
         jogando = false;
         break;
     }
 
-    // 2. Máquina de Estados (Navegação de Locais)
     switch (localAtual) {
         case "acidente":
             localAtual = acidente(carlos);
-            passarTurno(carlos);
             gerarEventoAleatorio(carlos);
+            passarTurno(carlos);
             break;
 
         case "rio":
             localAtual = rio(carlos);
-            passarTurno(carlos);
             gerarEventoAleatorio(carlos);
+            passarTurno(carlos);
             break;
 
         case "caverna":
             localAtual = caverna(carlos);
-            passarTurno(carlos);
             gerarEventoAleatorio(carlos);
+            passarTurno(carlos);
             break;
 
         case "tribo":
             localAtual = tribo(carlos);
-            passarTurno(carlos);
             gerarEventoAleatorio(carlos);
+            passarTurno(carlos);
             break;
 
         case "cidade":

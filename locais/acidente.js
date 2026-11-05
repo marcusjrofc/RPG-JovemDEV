@@ -14,15 +14,14 @@ function acidente(carlos) {
     
     if (escolha === "1") {
         console.log("\nEncontras uma ração militar, mas o esforço deixa-te faminto!");
-        carlos.fome -= 10;
-        if (carlos.fome < 0) carlos.fome = 0;
-
+        // REMOVER a linha: carlos.fome -= 10; 
+        
         if (!carlos.inventario.includes("racao militar")) {
             carlos.inventario.push("racao militar");
             console.log("Item 'racao militar' adicionado ao inventário.");
         }
         return "rio"; 
-    } 
+    }
     else if (escolha === "2") {
         console.log("\nDecides não perder tempo e segues a trilha na floresta.");
         return "rio"; 
