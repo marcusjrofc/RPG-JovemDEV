@@ -1,5 +1,5 @@
 const prompt = require("prompt-sync")({ sigint: true });
-const { adicionarItem, verificarItem } = require("../estado/personagem");
+const { adicionarItem, verificarItem, ITENS } = require("../estado/personagem");
 
 function rio(carlos) {
     console.log("\n==========================================");
@@ -8,7 +8,7 @@ function rio(carlos) {
     console.log("A água parece limpa e há peixes nadando perto da superfície.");
     console.log("==========================================");
 
-    const temCopo = verificarItem(carlos, "copo de aluminio");
+    const temCopo = verificarItem(carlos, ITENS.COPO);
 
     console.log("\nEscolha sua ação:");
     if (temCopo) {
@@ -19,13 +19,13 @@ function rio(carlos) {
     console.log("2 - Tentar pescar com as mãos (-5 Fome extra pela pesca, ganha peixe cru)");
     console.log("3 - Ignorar o rio e continuar seguindo viagem");
 
-    // Repete a pergunta até a pessoa digitar uma opção válida
     while (true) {
-        const escolha = prompt("O que você deseja fazer? ").trim();
+        const input = prompt("O que você deseja fazer? ");
+        const escolha = input ? input.trim() : "";
 
         if (escolha === "1" && temCopo) {
             console.log("\n🥤 Usas o copo de alumínio: Sede restaurada ao máximo!");
-            carlos.sede = 100;
+            carlos.sede = 115; // 100 + 15 compensação turno
             return "caverna";
         }
 
@@ -33,8 +33,8 @@ function rio(carlos) {
             console.log("\n🎣 Gastas energia ao tentar pescar (-5 Fome adicional). Pegas um pequeno peixe!");
             carlos.fome = Math.max(0, carlos.fome - 5);
 
-            if (!verificarItem(carlos, "peixe cru")) {
-                adicionarItem(carlos, "peixe cru");
+            if (!verificarItem(carlos, ITENS.PEIXE)) {
+                adicionarItem(carlos, ITENS.PEIXE);
             }
             return "caverna";
         }

@@ -7,16 +7,23 @@ function tribo(carlos) {
     console.log("==========================================");
 
     console.log("\nEscolha sua ação:");
-    console.log("1 - Aproximar-te e pedir ajuda aos nativos (Sacia a Fome totalmente)");
+    console.log("1 - Aproximar-te e pedir ajuda aos nativos (Sacia a Fome totalmente e Cura)");
     console.log("2 - Contornar a aldeia silenciosamente e seguir a trilha");
 
-    // Repete a pergunta até a pessoa digitar uma opção válida
     while (true) {
-        const escolha = prompt("> ").trim();
+        const input = prompt("> ");
+        const escolha = input ? input.trim() : "";
 
         if (escolha === "1") {
             console.log("\n🍲 Os nativos acolhem-te com um banquete: Fome restaurada ao máximo!");
-            carlos.fome = 100;
+            carlos.fome = 110; 
+            
+            // CURA DO VENENO
+            if (carlos.veneno) {
+                console.log("🌿 O xamã da tribo aplica raízes curativas nas tuas feridas: VENENO CURADO!");
+                carlos.veneno = false;
+            }
+
             return "cidade";
         }
 

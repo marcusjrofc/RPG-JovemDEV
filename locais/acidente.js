@@ -1,5 +1,5 @@
 const prompt = require("prompt-sync")({ sigint: true });
-const { adicionarItem, verificarItem } = require("../estado/personagem");
+const { adicionarItem, verificarItem, ITENS } = require("../estado/personagem");
 
 function acidente(carlos) {
     console.log("\n==========================================");
@@ -11,15 +11,15 @@ function acidente(carlos) {
     console.log("\n1 - Vasculhar os destroços em busca de suprimentos (ganha ração)");
     console.log("2 - Seguir em frente imediatamente para buscar ajuda");
 
-    // Repete a pergunta até a pessoa digitar uma opção válida
     while (true) {
-        const escolha = prompt("O que você deseja fazer? ").trim();
+        const input = prompt("O que você deseja fazer? ");
+        const escolha = input ? input.trim() : ""; // Tratamento anti-crash (null.trim)
 
         if (escolha === "1") {
             console.log("\nEncontras uma ração militar entre os destroços!");
 
-            if (!verificarItem(carlos, "racao militar")) {
-                adicionarItem(carlos, "racao militar");
+            if (!verificarItem(carlos, ITENS.RACAO)) {
+                adicionarItem(carlos, ITENS.RACAO);
             }
             return "rio";
         }
