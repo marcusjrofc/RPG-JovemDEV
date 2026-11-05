@@ -22,7 +22,7 @@ function rio(carlos) {
 
     if (escolha === "1" && temCopo) {
         console.log("\nUsas o copo de alumínio para beber água. A tua sede foi totalmente saciada!");
-        carlos.sede = 100; // 100 = Totalmente hidratado
+        carlos.sede = 115; // Compensação de -15 do passarTurno
         return "caverna";
     } 
     else if (escolha === "2") {

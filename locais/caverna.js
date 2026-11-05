@@ -26,6 +26,24 @@ function caverna(carlos) {
         return "tribo";
     } else if (escolha === "2") {
         console.log("\nDescansas alguns minutos nas pedras e segues para a saída.");
+        
+        // Mecânica de consumo de comida no descanso
+        if (carlos.inventario.includes("racao militar")) {
+            console.log("🍖 Aproveitas o descanso para comer a Ração Militar! (+40 Fome)");
+            carlos.fome += 40;
+            if (carlos.fome > 100) carlos.fome = 100;
+            
+            const idx = carlos.inventario.indexOf("racao militar");
+            carlos.inventario.splice(idx, 1);
+        } else if (carlos.inventario.includes("peixe cru")) {
+            console.log("🐟 Aproveitas para comer o Peixe Cru recolhido no rio! (+25 Fome)");
+            carlos.fome += 25;
+            if (carlos.fome > 100) carlos.fome = 100;
+            
+            const idx = carlos.inventario.indexOf("peixe cru");
+            carlos.inventario.splice(idx, 1);
+        }
+
         return "tribo";
     }
 
