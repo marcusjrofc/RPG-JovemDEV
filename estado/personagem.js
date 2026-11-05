@@ -1,9 +1,9 @@
 const carlos = {
   nome: 'Carlos',
-  vida: 10,
-  fome: 10,
-  sede: 10,
-  veneno: 0,
+  vida: 100,
+  fome: 100,
+  sede: 100,
+  veneno: false,
   inventario: ['copo de alumínio', 'machadinha', 'mochila', 'isqueiro', 'roupas']
 };
 
