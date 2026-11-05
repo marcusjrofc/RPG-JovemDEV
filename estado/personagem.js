@@ -1,14 +1,22 @@
+const ITENS = {
+  COPO: 'copo de aluminio',
+  MACHADO: 'machadinha',
+  MOCHILA: 'mochila',
+  ISQUEIRO: 'isqueiro',
+  ROUPAS: 'roupas',
+  RACAO: 'racao militar',
+  PEIXE: 'peixe cru'
+};
+
 const carlos = {
   nome: 'Carlos',
   vida: 100,
   fome: 100,
   sede: 100,
   veneno: false,
-  inventario: ['copo de aluminio', 'machadinha', 'mochila', 'isqueiro', 'roupas']
+  inventario: [ITENS.COPO, ITENS.MACHADO, ITENS.MOCHILA, ITENS.ISQUEIRO, ITENS.ROUPAS]
 };
 
-// Todas as funções recebem o personagem, assim os locais e eventos
-// usam sempre o mesmo caminho para mexer no inventário.
 function adicionarItem(personagem, item) {
   personagem.inventario.push(item);
   console.log(`Item '${item}' adicionado.`);
@@ -33,6 +41,7 @@ function verificarItem(personagem, item) {
 
 module.exports = {
   carlos,
+  ITENS,
   adicionarItem,
   removerItem,
   verificarItem
