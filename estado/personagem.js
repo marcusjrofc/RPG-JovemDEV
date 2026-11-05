@@ -10,7 +10,7 @@ const ITENS = {
 
 const carlos = {
   nome: 'Carlos',
-  vida: 100, // Vida cheia para aguentar 1 ataque da onça
+  vida: 50, // Vida cheia para aguentar 1 ataque da onça
   fome: 40,  // Balanceamento: Obriga a comer
   sede: 45,  // Balanceamento: Obriga a beber
   veneno: false,
