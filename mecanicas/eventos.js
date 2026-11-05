@@ -1,4 +1,4 @@
-const { verificarItem } = require("../estado/personagem");
+const { verificarItem, ITENS } = require("../estado/personagem");
 
 const DESGASTE_FOME = 10;
 const DESGASTE_SEDE = 15;
@@ -39,38 +39,28 @@ function gerarEventoAleatorio(carlos) {
   let dado = Math.floor(Math.random() * 10);
 
   if (dado <= 3) {
-    console.log(
-      "🌿 O silêncio da Amazônia te cerca. Por enquanto, tudo calmo.",
-    );
+    console.log("🌿 O silêncio da Amazônia te cerca. Por enquanto, tudo calmo.");
   } else if (dado <= 6) {
     console.log("\n🐆 [EVENTO] Uma Onça-Pintada surge faminta dos arbustos!");
 
-    if (verificarItem(carlos, "machadinha")) {
-      console.log(
-        "Usaste a machadinha para espantar a onça, mas sofreste arranhões (-20 Vida).",
-      );
+    if (verificarItem(carlos, ITENS.MACHADO)) {
+      console.log("Usaste a machadinha para espantar a onça, mas sofreste arranhões (-20 Vida).");
       carlos.vida -= 20;
     } else {
-      console.log(
-        "Sem armas! Tentaste correr e a onça feriu-te gravemente (-50 Vida).",
-      );
+      console.log("Sem armas! Tentaste correr e a onça feriu-te gravemente (-50 Vida).");
       carlos.vida -= 50;
     }
   } else if (dado <= 8) {
     console.log("\n🦟 [EVENTO] Uma nuvem de mosquitos te ataca!");
     carlos.veneno = true;
-    console.log(
-      "Contraíste uma febre e agora estás ENVENENADO (-5 Vida por turno).",
-    );
+    console.log("Contraíste uma febre e agora estás ENVENENADO (-5 Vida por turno).");
   } else {
     console.log("\n🌧️ [EVENTO] Começou a chover forte!");
-    // Só bebe se ainda não estiver com a sede no máximo
     if (carlos.sede >= 100) {
-      console.log(
-        "Como já estás totalmente hidratado (100%), apenas te molhas na chuva.",
-      );
+      console.log("Como já estás totalmente hidratado (100%), apenas te molhas na chuva.");
     } else {
-      carlos.sede = Math.min(100, carlos.sede + 30);
+      // 115 para cobrir os 15 de dedução do turno que vêm logo a seguir
+      carlos.sede = Math.min(115, carlos.sede + 45);
       console.log("Aproveitaste para beber água da chuva (+30 Sede).");
     }
   }
