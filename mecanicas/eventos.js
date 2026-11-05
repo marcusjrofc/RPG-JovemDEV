@@ -52,9 +52,13 @@ function gerarEventoAleatorio(carlos) {
     console.log("Você contraiu uma febre e agora está ENVENENADO.");
   } else {
     console.log("\n [EVENTO] Começou a chover forte!");
-    carlos.sede += 30;
-    if (carlos.sede > 100) carlos.sede = 100;
-    console.log("Você aproveitou para beber água da chuva (+30 Sede).");
+    if (carlos.sede >= 100) {
+      console.log("Como já estás totalmente hidratado (100%), apenas te molhas na chuva.");
+    } else {
+      carlos.sede += 30;
+      if (carlos.sede > 100) carlos.sede = 100;
+      console.log("Você aproveitou para beber água da chuva (+30 Sede).");
+    }
   }
 
   if (carlos.vida < 0) carlos.vida = 0;
