@@ -8,19 +8,20 @@ function acidente(carlos) {
     console.log("Carlos acorda atordoado em meio aos destroços fumegantes.");
     console.log("==========================================");
 
-    console.log("\n1 - Vasculhar os destroços em busca de suprimentos (ganha ração)");
+    console.log("\n1 - Vasculhar os destroços em busca de suprimentos (ganha ração e isqueiro)");
     console.log("2 - Seguir em frente imediatamente para buscar ajuda");
 
     while (true) {
         const input = prompt("O que você deseja fazer? ");
-        const escolha = input ? input.trim() : ""; // Tratamento anti-crash (null.trim)
+        const escolha = input ? input.trim() : "";
 
         if (escolha === "1") {
-            console.log("\nEncontras uma ração militar entre os destroços!");
+            // Agora ele acha a ração E o isqueiro de emergência do avião
+            console.log("\nEncontras uma ração militar e um isqueiro intacto entre os destroços!");
 
-            if (!verificarItem(carlos, ITENS.RACAO)) {
-                adicionarItem(carlos, ITENS.RACAO);
-            }
+            if (!verificarItem(carlos, ITENS.RACAO)) adicionarItem(carlos, ITENS.RACAO);
+            if (!verificarItem(carlos, ITENS.ISQUEIRO)) adicionarItem(carlos, ITENS.ISQUEIRO);
+            
             return "rio";
         }
 

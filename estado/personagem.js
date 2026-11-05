@@ -10,11 +10,11 @@ const ITENS = {
 
 const carlos = {
   nome: 'Carlos',
-  vida: 100,
-  fome: 100,
-  sede: 100,
+  vida: 50, // Deixamos a vida em 100 para aguentar um ataque de onça
+  fome: 40,  // ⚠️ BALANCEAMENTO: Carlos acorda faminto. Tem 4 turnos antes de começar a perder vida.
+  sede: 45,  // ⚠️ BALANCEAMENTO: Carlos acorda desidratado. Tem 3 turnos antes de começar a perder vida.
   veneno: false,
-  inventario: [ITENS.COPO, ITENS.MACHADO, ITENS.MOCHILA, ITENS.ISQUEIRO, ITENS.ROUPAS]
+  inventario: [ITENS.COPO, ITENS.MOCHILA, ITENS.ROUPAS] 
 };
 
 function adicionarItem(personagem, item) {

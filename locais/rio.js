@@ -17,7 +17,7 @@ function rio(carlos) {
         console.log("[Trancado] Precisas de um copo de alumínio para beber água com segurança.");
     }
     console.log("2 - Tentar pescar com as mãos (-5 Fome extra pela pesca, ganha peixe cru)");
-    console.log("3 - Ignorar o rio e continuar seguindo viagem");
+    console.log("3 - Explorar as margens do rio em busca de destroços do avião (ganha machadinha)");
 
     while (true) {
         const input = prompt("O que você deseja fazer? ");
@@ -25,7 +25,7 @@ function rio(carlos) {
 
         if (escolha === "1" && temCopo) {
             console.log("\n🥤 Usas o copo de alumínio: Sede restaurada ao máximo!");
-            carlos.sede = 115; // 100 + 15 compensação turno
+            carlos.sede = 115;
             return "caverna";
         }
 
@@ -33,14 +33,15 @@ function rio(carlos) {
             console.log("\n🎣 Gastas energia ao tentar pescar (-5 Fome adicional). Pegas um pequeno peixe!");
             carlos.fome = Math.max(0, carlos.fome - 5);
 
-            if (!verificarItem(carlos, ITENS.PEIXE)) {
-                adicionarItem(carlos, ITENS.PEIXE);
-            }
+            if (!verificarItem(carlos, ITENS.PEIXE)) adicionarItem(carlos, ITENS.PEIXE);
             return "caverna";
         }
 
         if (escolha === "3") {
-            console.log("\nDecides não arriscar perder tempo no rio e segues em frente.");
+            // Nova mecânica: ganha a machadinha, mas perde a chance de beber ou comer no rio!
+            console.log("\n🪓 Encontras a caixa de emergência do avião presa nas pedras e pegas uma machadinha!");
+            
+            if (!verificarItem(carlos, ITENS.MACHADO)) adicionarItem(carlos, ITENS.MACHADO);
             return "caverna";
         }
 

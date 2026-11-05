@@ -27,15 +27,18 @@ while (localAtual !== "fim") {
         break;
     }
 
+    // ... (resto do teu código dentro do while)
+
     localAtual = local(carlos);
 
-    // Bloqueia eventos fantasmas se Carlos morreu durante a fase (ex: tropeçou na caverna)
+    // Bloqueia eventos fantasmas se Carlos morreu durante a fase
     if (carlos.vida <= 0) {
         console.log("\n💀 GAME OVER: Carlos sucumbiu aos perigos da Amazônia.");
         break;
     }
 
-    if (localAtual !== "fim") {
+    // ⚠️ CORREÇÃO DA ZONA SEGURA: Se ele já chegou à cidade ou ao fim, não sofre ataques!
+    if (localAtual !== "fim" && localAtual !== "cidade") {
         gerarEventoAleatorio(carlos);
         passarTurno(carlos);
     }

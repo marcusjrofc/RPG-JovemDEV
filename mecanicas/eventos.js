@@ -44,11 +44,13 @@ function gerarEventoAleatorio(carlos) {
     console.log("\n🐆 [EVENTO] Uma Onça-Pintada surge faminta dos arbustos!");
 
     if (verificarItem(carlos, ITENS.MACHADO)) {
-      console.log("Usaste a machadinha para espantar a onça, mas sofreste arranhões (-20 Vida).");
-      carlos.vida -= 20;
+      // Dano reduzido de -20 para -15
+      console.log("Usaste a machadinha para espantar a onça, mas sofreste arranhões (-15 Vida).");
+      carlos.vida -= 15;
     } else {
-      console.log("Sem armas! Tentaste correr e a onça feriu-te gravemente (-50 Vida).");
-      carlos.vida -= 50;
+      // Dano reduzido de -50 para -35
+      console.log("Sem armas! Tentaste correr e a onça feriu-te gravemente (-35 Vida).");
+      carlos.vida -= 35;
     }
   } else if (dado <= 8) {
     console.log("\n🦟 [EVENTO] Uma nuvem de mosquitos te ataca!");
