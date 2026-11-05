@@ -7,64 +7,40 @@
 const { carlos } = require("./estado/personagem");
 const { passarTurno, gerarEventoAleatorio } = require("./mecanicas/eventos");
 
-// Importação das funções de local
-const acidente = require("./locais/acidente");
-const rio = require("./locais/rio");
-const caverna = require("./locais/caverna");
-const tribo = require("./locais/tribo");
-const cidade = require("./locais/cidade");
+// Cada local é uma função que recebe o personagem e devolve o nome do próximo local
+const locais = {
+    acidente: require("./locais/acidente"),
+    rio: require("./locais/rio"),
+    caverna: require("./locais/caverna"),
+    tribo: require("./locais/tribo"),
+    cidade: require("./locais/cidade"),
+};
 
 let localAtual = "acidente";
-let jogando = true;
 
 console.log("\n=== SOBREVIVÊNCIA NA AMAZÔNIA: A JORNADA DE CARLOS ===");
 // Exibe os atributos no início do jogo
 console.log(`📊 Status Inicial -> Vida: ${carlos.vida} | Fome: ${carlos.fome} | Sede: ${carlos.sede}\n`);
 
-while (jogando) {
+while (localAtual !== "fim") {
     if (carlos.vida <= 0) {
         console.log("\n💀 GAME OVER: Carlos sucumbiu aos perigos da Amazônia.");
-        jogando = false;
         break;
     }
 
-    switch (localAtual) {
-        case "acidente":
-            localAtual = acidente(carlos);
-            gerarEventoAleatorio(carlos);
-            passarTurno(carlos);
-            break;
+    const local = locais[localAtual];
 
-        case "rio":
-            localAtual = rio(carlos);
-            gerarEventoAleatorio(carlos);
-            passarTurno(carlos);
-            break;
+    if (!local) {
+        console.log("Local inválido ou não encontrado. Encerrando...");
+        break;
+    }
 
-        case "caverna":
-            localAtual = caverna(carlos);
-            gerarEventoAleatorio(carlos);
-            passarTurno(carlos);
-            break;
+    localAtual = local(carlos);
 
-        case "tribo":
-            localAtual = tribo(carlos);
-            gerarEventoAleatorio(carlos);
-            passarTurno(carlos);
-            break;
-
-        case "cidade":
-            cidade(carlos);
-            jogando = false;
-            break;
-
-        case "fim":
-            jogando = false;
-            break;
-
-        default:
-            console.log("Local inválido ou não encontrado. Encerrando...");
-            jogando = false;
-            break;
+    // O tempo só passa quando Carlos realmente vai a algum lugar
+    // (a cidade devolve "fim" e encerra o jogo sem novo turno).
+    if (localAtual !== "fim") {
+        gerarEventoAleatorio(carlos);
+        passarTurno(carlos);
     }
 }
