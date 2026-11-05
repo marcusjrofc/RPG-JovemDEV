@@ -1,9 +1,14 @@
+const { verificarItem } = require("../estado/personagem");
+
+const DESGASTE_FOME = 10;
+const DESGASTE_SEDE = 15;
+
 function passarTurno(carlos) {
   console.log("\n--- Um tempo se passa na selva... ---");
-  console.log("🚶 Desgaste da caminhada: -10 Fome | -15 Sede");
+  console.log(`🚶 Desgaste da caminhada: -${DESGASTE_FOME} Fome | -${DESGASTE_SEDE} Sede`);
 
-  carlos.fome -= 10;
-  carlos.sede -= 15;
+  carlos.fome -= DESGASTE_FOME;
+  carlos.sede -= DESGASTE_SEDE;
 
   if (carlos.fome < 0) carlos.fome = 0;
   if (carlos.sede < 0) carlos.sede = 0;
@@ -40,7 +45,7 @@ function gerarEventoAleatorio(carlos) {
   } else if (dado <= 6) {
     console.log("\n🐆 [EVENTO] Uma Onça-Pintada surge faminta dos arbustos!");
 
-    if (carlos.inventario.includes("machadinha")) {
+    if (verificarItem(carlos, "machadinha")) {
       console.log(
         "Usaste a machadinha para espantar a onça, mas sofreste arranhões (-20 Vida).",
       );
@@ -59,18 +64,13 @@ function gerarEventoAleatorio(carlos) {
     );
   } else {
     console.log("\n🌧️ [EVENTO] Começou a chover forte!");
-    // Verifica se já está hidratado (100 ou 115 por causa do rio)
+    // Só bebe se ainda não estiver com a sede no máximo
     if (carlos.sede >= 100) {
       console.log(
         "Como já estás totalmente hidratado (100%), apenas te molhas na chuva.",
       );
     } else {
-      // Adicionamos 45 (+30 do bônus real + 15 de compensação do turno)
-      carlos.sede += 45;
-
-      // O teto temporário é 115, pois o turno vai tirar 15 logo a seguir, deixando no máximo 100
-      if (carlos.sede > 115) carlos.sede = 115;
-
+      carlos.sede = Math.min(100, carlos.sede + 30);
       console.log("Aproveitaste para beber água da chuva (+30 Sede).");
     }
   }
