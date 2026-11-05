@@ -1,101 +1,70 @@
-// A trilha do farol · jogo de demonstração do Jovem Tech (E15)
-// Tudo aqui usa o que vocês já viram: variáveis, prompt, if / else, while e vetor.
-// Só uma coisa é nova: Math.random(), que sorteia um número entre 0 e 1.
-const prompt = require("prompt-sync")();
+/**
+ * @file jogo.js
+ * @description Loop principal do jogo e integração dos módulos.
+ * @author Gustavo
+ */
 
-// ===== CONTROLE DO JOGO =====
-let local = "vila";        // onde o herói está agora
-let jogando = true;        // o jogo continua enquanto for true
-const TESTE = false;       // true = a sorte fica fixa, para o roteiro de teste
+const { carlos } = require("./estado/personagem");
+const { passarTurno, gerarEventoAleatorio } = require("./mecanicas/eventos");
 
-// ===== HERÓI =====
-let nome = prompt("Qual é o nome do seu herói? ");
-let vida = 10;
-let veneno = 0;            // quantos passos o veneno ainda dura
-const inventario = [];
+// Importação das funções de local
+const acidente = require("./locais/acidente");
+const rio = require("./locais/rio");
+const caverna = require("./locais/caverna");
+const tribo = require("./locais/tribo");
+const cidade = require("./locais/cidade");
 
-console.log("");
-console.log(nome + ", o farol da costa apagou. Alguém precisa chegar lá antes do anoitecer.");
+let localAtual = "acidente";
+let jogando = true;
+
+console.log("\n=== SOBREVIVÊNCIA NA AMAZÔNIA: A JORNADA DE CARLOS ===");
 
 while (jogando) {
-  // a cada passo, o veneno tira 1 de vida
-  if (veneno > 0) {
-    vida = vida - 1;
-    veneno = veneno - 1;
-    console.log("O veneno arde. Vida: " + vida);
-  }
-  if (vida <= 0) {
-    console.log("Você caiu no caminho. Fim de jogo.");
-    jogando = false;
-  } else if (local === "vila") {
-    console.log("");
-    console.log("[VILA] Um velho pescador te entrega uma moeda furada: 'Não vale nada. Guarde mesmo assim.'");
-    if (inventario.includes("moeda furada") === false) {
-      inventario.push("moeda furada");
+    // 1. Checagem de Morte
+    if (carlos.vida <= 0) {
+        console.log("\n💀 GAME OVER: Carlos sucumbiu aos perigos da Amazônia.");
+        jogando = false;
+        break;
     }
-    console.log("1 - ir para a floresta   2 - ir para o poço");
-    let escolha = prompt("> ");
-    if (escolha === "1") {
-      local = "floresta";
-    } else if (escolha === "2") {
-      local = "poco";
+
+    // 2. Máquina de Estados (Navegação de Locais)
+    switch (localAtual) {
+        case "acidente":
+            localAtual = acidente(carlos);
+            passarTurno(carlos);
+            gerarEventoAleatorio(carlos);
+            break;
+
+        case "rio":
+            localAtual = rio(carlos);
+            passarTurno(carlos);
+            gerarEventoAleatorio(carlos);
+            break;
+
+        case "caverna":
+            localAtual = caverna(carlos);
+            passarTurno(carlos);
+            gerarEventoAleatorio(carlos);
+            break;
+
+        case "tribo":
+            localAtual = tribo(carlos);
+            passarTurno(carlos);
+            gerarEventoAleatorio(carlos);
+            break;
+
+        case "cidade":
+            cidade(carlos);
+            jogando = false;
+            break;
+
+        case "fim":
+            jogando = false;
+            break;
+
+        default:
+            console.log("Local inválido ou não encontrado. Encerrando...");
+            jogando = false;
+            break;
     }
-  } else if (local === "floresta") {
-    console.log("");
-    console.log("[FLORESTA] Galhos fechados. Algo se mexe no chão.");
-    let sorte = Math.random();
-    if (TESTE) {
-      sorte = 0.2;
-    }
-    if (sorte < 0.4) {
-      console.log("Uma aranha te morde! Você está envenenado por 3 passos.");
-      veneno = 3;
-    } else {
-      console.log("Era só o vento.");
-    }
-    console.log("1 - seguir para a ponte   2 - voltar para a vila");
-    let escolha = prompt("> ");
-    if (escolha === "1") {
-      local = "ponte";
-    } else if (escolha === "2") {
-      local = "vila";
-    }
-  } else if (local === "poco") {
-    console.log("");
-    console.log("[POÇO] Um poço antigo. Não dá para ver o fundo.");
-    console.log("1 - voltar para a vila   2 - beber água (recupera 3 de vida)");
-    if (inventario.includes("moeda furada")) {
-      console.log("3 - jogar a moeda furada no poço");
-    }
-    let escolha = prompt("> ");
-    if (escolha === "1") {
-      local = "vila";
-    } else if (escolha === "2") {
-      vida = vida + 3;
-      console.log("A água é gelada. Vida: " + vida);
-    } else if (escolha === "3" && inventario.includes("moeda furada")) {
-      console.log("A moeda cai sem fazer barulho. Uma corda sobe do fundo do poço, sozinha.");
-      inventario.push("corda");
-      console.log("Inventário: " + inventario);
-    }
-  } else if (local === "ponte") {
-    console.log("");
-    console.log("[PONTE] A ponte para o farol caiu. Do outro lado, o farol apagado.");
-    if (inventario.includes("corda")) {
-      console.log("1 - amarrar a corda e atravessar   2 - voltar para a floresta");
-    } else {
-      console.log("Não tem como atravessar.   2 - voltar para a floresta");
-    }
-    let escolha = prompt("> ");
-    if (escolha === "1" && inventario.includes("corda")) {
-      local = "farol";
-    } else if (escolha === "2") {
-      local = "floresta";
-    }
-  } else if (local === "farol") {
-    console.log("");
-    console.log("[FAROL] Você sobe a escada e acende a luz. Lá embaixo, os barcos voltam para casa.");
-    console.log("Fim: " + nome + " salvou a costa com " + vida + " de vida.");
-    jogando = false;
-  }
 }
